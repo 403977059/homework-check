@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>作业打卡</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: linear-gradient(135deg, #fce8ef 0%, #f5e6fa 50%, #e3f0fa 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px 16px;
+    color: #333;
+  }
+  .container {
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+  }
+  .main-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: #5a4a50;
+    margin-bottom: 6px;
+  }
+  .main-sub {
+    font-size: 14px;
+    color: #b0a0a8;
+    letter-spacing: 6px;
+    margin-bottom: 36px;
+  }
+  .student-card {
+    display: block;
+    background: #fff;
+    border-radius: 24px;
+    padding: 32px 20px 28px;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+    cursor: pointer;
+    border: 2px solid transparent;
+  }
+  .student-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 36px rgba(0,0,0,0.10);
+  }
+  .student-card:active {
+    transform: scale(0.97);
+  }
+  .student-card .avatar {
+    font-size: 48px;
+    display: block;
+    margin-bottom: 10px;
+  }
+  .student-card .sname {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .student-card .sdesc {
+    font-size: 13px;
+    letter-spacing: 2px;
+  }
+  .student-card.chen {
+    border-color: #fce0e8;
+  }
+  .student-card.chen:hover {
+    border-color: #f48fb1;
+    background: #fff8fa;
+  }
+  .student-card.chen .sname { color: #d4617a; }
+  .student-card.chen .sdesc { color: #e8a0b4; }
+  .student-card.le {
+    border-color: #d0e4f5;
+  }
+  .student-card.le:hover {
+    border-color: #5b9bd5;
+    background: #f5faff;
+  }
+  .student-card.le .sname { color: #2c6b9e; }
+  .student-card.le .sdesc { color: #7aa9d4; }
+  .footer-note {
+    font-size: 12px;
+    color: #c0b0b8;
+    margin-top: 8px;
+  }
+  @media (max-width: 400px) {
+    .main-title { font-size: 26px; }
+    .student-card { padding: 24px 16px 20px; }
+    .student-card .avatar { font-size: 40px; }
+    .student-card .sname { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="main-title">📚 作业打卡</div>
+  <div class="main-sub">✦ 今日学习记录 ✦</div>
+
+  <a href="/chen" class="student-card chen">
+    <span class="avatar">🌸</span>
+    <div class="sname">郭雨晨</div>
+    <div class="sdesc">✦ 打卡小达人 ✦</div>
+  </a>
+
+  <a href="/le" class="student-card le">
+    <span class="avatar">🚀</span>
+    <div class="sname">郭雨乐</div>
+    <div class="sdesc">✦ 学习小勇士 ✦</div>
+  </a>
+
+  <div class="footer-note">选择学生开始打卡</div>
+</div>
+</body>
+</html>

@@ -113,13 +113,13 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 8px;
   }
 
   .subject-card {
     background: #fff;
     border-radius: 18px;
-    padding: 18px 10px 14px;
+    padding: 18px 10px 12px;
     text-align: center;
     box-shadow: 0 2px 12px rgba(212,97,122,0.10);
     cursor: pointer;
@@ -161,7 +161,7 @@
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
-    margin: 0 auto;
+    margin: 0 auto 6px;
   }
 
   .check-circle svg {
@@ -259,6 +259,95 @@
     border-color: #c8b8d8; background: #c8b8d8;
   }
   .subject-card.english .name { color: #8b6fd6; }
+
+  /* ── Photos in Cards ── */
+  .photos-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    justify-content: center;
+    min-height: 0;
+    margin-bottom: 4px;
+  }
+
+  .photo-thumb {
+    position: relative;
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 1px solid #f0d6e0;
+    cursor: pointer;
+  }
+
+  .photo-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .photo-thumb .photo-del-btn {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: none;
+    background: #e74c5e;
+    color: #fff;
+    font-size: 10px;
+    line-height: 16px;
+    text-align: center;
+    cursor: pointer;
+    display: none;
+    z-index: 2;
+    padding: 0;
+  }
+
+  .photo-thumb:hover .photo-del-btn {
+    display: block;
+  }
+
+  .photo-add-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px dashed #f0d6e0;
+    background: #faf5f7;
+    color: #e8a0b4;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s;
+    margin: 0 auto 4px;
+    padding: 0;
+    line-height: 1;
+  }
+
+  .photo-add-btn:hover {
+    border-color: #d4617a;
+    color: #d4617a;
+    background: #fce8ef;
+  }
+
+  .photo-count-label {
+    font-size: 10px;
+    color: #d4a0b0;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .photo-uploading {
+    font-size: 10px;
+    color: #e8a0b4;
+    display: block;
+    margin-bottom: 2px;
+  }
 
   /* ── Calendar ── */
   .calendar-section {
@@ -519,14 +608,93 @@
     color: #b0a8a8;
   }
 
+  /* ── Lightbox ── */
+  .lightbox {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.85);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+  }
+
+  .lightbox.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .lightbox img {
+    max-width: 92%;
+    max-height: 88%;
+    border-radius: 8px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    object-fit: contain;
+  }
+
+  .lightbox-close {
+    position: absolute;
+    top: 18px;
+    right: 22px;
+    font-size: 32px;
+    color: #fff;
+    cursor: pointer;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    transition: background 0.2s;
+    line-height: 1;
+  }
+
+  .lightbox-close:hover {
+    background: rgba(255,255,255,0.3);
+  }
+
+  .lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 28px;
+    color: #fff;
+    cursor: pointer;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    transition: background 0.2s;
+    line-height: 1;
+    user-select: none;
+  }
+
+  .lightbox-nav:hover {
+    background: rgba(255,255,255,0.3);
+  }
+
+  .lightbox-nav.prev { left: 14px; }
+  .lightbox-nav.next { right: 14px; }
+
   /* ── Responsive ── */
   @media (max-width: 400px) {
     .subjects { gap: 8px; }
-    .subject-card { padding: 14px 8px 10px; }
+    .subject-card { padding: 14px 6px 10px; }
     .subject-card .emoji { font-size: 24px; }
     .subject-card .name { font-size: 13px; }
     .check-circle { width: 28px; height: 28px; border-width: 2px; }
     .check-circle svg { width: 14px; height: 14px; }
+    .photo-thumb { width: 30px; height: 30px; }
+    .photo-add-btn { width: 24px; height: 24px; font-size: 13px; }
     .container { padding: 0; }
     body { padding: 16px 8px 24px; }
     .progress-section { padding: 12px 14px; }
@@ -536,10 +704,12 @@
   }
 
   @media (min-width: 600px) {
-    .subject-card { padding: 24px 16px 20px; }
+    .subject-card { padding: 24px 16px 18px; }
     .subject-card .emoji { font-size: 36px; }
     .check-circle { width: 42px; height: 42px; }
     .check-circle svg { width: 24px; height: 24px; }
+    .photo-thumb { width: 46px; height: 46px; }
+    .photo-add-btn { width: 34px; height: 34px; font-size: 18px; }
   }
 </style>
 </head>
@@ -574,6 +744,9 @@
           <polyline points="20 6 9 17 4 12"/>
         </svg>
       </div>
+      <div class="photos-row" id="photos-语文"></div>
+      <button class="photo-add-btn" data-subject="语文" title="上传照片">+</button>
+      <input type="file" class="photo-input" data-subject="语文" accept="image/*" multiple hidden>
       <span class="only-today-badge">仅限今日打卡</span>
     </div>
 
@@ -585,6 +758,9 @@
           <polyline points="20 6 9 17 4 12"/>
         </svg>
       </div>
+      <div class="photos-row" id="photos-数学"></div>
+      <button class="photo-add-btn" data-subject="数学" title="上传照片">+</button>
+      <input type="file" class="photo-input" data-subject="数学" accept="image/*" multiple hidden>
       <span class="only-today-badge">仅限今日打卡</span>
     </div>
 
@@ -596,6 +772,9 @@
           <polyline points="20 6 9 17 4 12"/>
         </svg>
       </div>
+      <div class="photos-row" id="photos-英语"></div>
+      <button class="photo-add-btn" data-subject="英语" title="上传照片">+</button>
+      <input type="file" class="photo-input" data-subject="英语" accept="image/*" multiple hidden>
       <span class="only-today-badge">仅限今日打卡</span>
     </div>
   </div>
@@ -633,14 +812,25 @@
 
 </div>
 
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <span class="lightbox-close" id="lightboxClose">&times;</span>
+  <span class="lightbox-nav prev" id="lightboxPrev">&#8249;</span>
+  <img id="lightboxImg" src="" alt="照片预览">
+  <span class="lightbox-nav next" id="lightboxNext">&#8250;</span>
+</div>
+
 <script>
 (function() {
   var SUBJECTS = ['语文', '数学', '英语'];
 
-  // ── 数据层（全部通过 API 读写 SQLite） ──
-  var allData = {};          // 内存缓存: { "2026-06-14": { "语文":true, ... }, ... }
+  // ── 数据层 ──
+  var allData = {};
   var selectedDate = todayStr();
   var calYear, calMonth;
+  var allPhotos = {};   // { "语文": [...], "数学": [...], "英语": [...] }
+  var lightboxPhotos = []; // flattened list for lightbox navigation
+  var lightboxIndex = 0;
 
   function todayStr() {
     var d = new Date();
@@ -656,7 +846,7 @@
     return dateStr === todayStr();
   }
 
-  // 从服务器加载全部数据
+  // ── API 调用 ──
   function loadAllData() {
     return fetch('/api/data')
       .then(function(r) { return r.json(); })
@@ -669,7 +859,21 @@
       });
   }
 
-  // 获取某天的科目状态
+  function loadPhotosForDate(dateStr) {
+    allPhotos = { '语文': [], '数学': [], '英语': [] };
+    var promises = SUBJECTS.map(function(sub) {
+      return fetch('/api/photos?date=' + encodeURIComponent(dateStr) + '&subject=' + encodeURIComponent(sub))
+        .then(function(r) { return r.json(); })
+        .then(function(photos) {
+          allPhotos[sub] = photos;
+        })
+        .catch(function() {});
+    });
+    return Promise.all(promises).then(function() {
+      renderPhotos();
+    });
+  }
+
   function getSubjectsForDay(dateStr) {
     var day = allData[dateStr];
     if (!day) return { '语文': false, '数学': false, '英语': false };
@@ -680,7 +884,6 @@
     return result;
   }
 
-  // 切换某天某科状态（只允许今天）
   function toggleSubject(dateStr, subject) {
     if (dateStr !== todayStr()) return;
     fetch('/api/toggle', {
@@ -811,7 +1014,11 @@
       cell.appendChild(dot);
 
       cell.addEventListener('click', (function(ds) {
-        return function() { selectedDate = ds; renderAll(); };
+        return function() {
+          selectedDate = ds;
+          renderAll();
+          loadPhotosForDate(ds);
+        };
       })(dateStr));
 
       grid.appendChild(cell);
@@ -853,15 +1060,160 @@
       '</div>';
   }
 
+  // ── 照片渲染 ──
+  function renderPhotos() {
+    var todayFlag = isToday(selectedDate);
+    SUBJECTS.forEach(function(sub) {
+      var container = document.getElementById('photos-' + sub);
+      container.innerHTML = '';
+      var photos = allPhotos[sub] || [];
+      photos.forEach(function(photo, idx) {
+        var thumb = document.createElement('div');
+        thumb.className = 'photo-thumb';
+        thumb.title = '点击查看大图';
+
+        var img = document.createElement('img');
+        img.src = photo.url;
+        img.alt = '作业照片';
+        img.loading = 'lazy';
+        thumb.appendChild(img);
+
+        if (todayFlag) {
+          var delBtn = document.createElement('button');
+          delBtn.className = 'photo-del-btn';
+          delBtn.textContent = '×';
+          delBtn.title = '删除';
+          delBtn.dataset.photoId = photo.id;
+          delBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            deletePhoto(photo.id);
+          });
+          thumb.appendChild(delBtn);
+        }
+
+        thumb.addEventListener('click', function() {
+          openLightbox(sub, idx);
+        });
+
+        container.appendChild(thumb);
+      });
+    });
+  }
+
+  // ── 上传照片 ──
+  function handleFileSelect(subject) {
+    var input = document.querySelector('.photo-input[data-subject="' + subject + '"]');
+    var files = input.files;
+    if (!files || files.length === 0) return;
+
+    var addBtn = document.querySelector('.photo-add-btn[data-subject="' + subject + '"]');
+    addBtn.textContent = '...';
+    addBtn.disabled = true;
+
+    var formData = new FormData();
+    formData.append('date', selectedDate);
+    formData.append('subject', subject);
+    for (var i = 0; i < files.length; i++) {
+      formData.append('photos', files[i]);
+    }
+
+    fetch('/api/upload', {
+      method: 'POST',
+      body: formData
+    })
+      .then(function(r) { return r.json(); })
+      .then(function(result) {
+        input.value = '';
+        addBtn.textContent = '+';
+        addBtn.disabled = false;
+        loadPhotosForDate(selectedDate);
+      })
+      .catch(function() {
+        addBtn.textContent = '+';
+        addBtn.disabled = false;
+      });
+  }
+
+  // ── 删除照片 ──
+  function deletePhoto(photoId) {
+    fetch('/api/photo/' + photoId, { method: 'DELETE' })
+      .then(function(r) { return r.json(); })
+      .then(function(result) {
+        if (result.success) {
+          loadPhotosForDate(selectedDate);
+        }
+      })
+      .catch(function() {});
+  }
+
+  // ── Lightbox ──
+  function openLightbox(subject, index) {
+    lightboxPhotos = allPhotos[subject] || [];
+    if (lightboxPhotos.length === 0) return;
+    lightboxIndex = index;
+    showLightboxImage();
+    document.getElementById('lightbox').classList.add('open');
+  }
+
+  function showLightboxImage() {
+    var img = document.getElementById('lightboxImg');
+    if (lightboxPhotos.length > 0 && lightboxIndex >= 0 && lightboxIndex < lightboxPhotos.length) {
+      img.src = lightboxPhotos[lightboxIndex].url;
+    }
+    var prev = document.getElementById('lightboxPrev');
+    var next = document.getElementById('lightboxNext');
+    prev.style.display = lightboxPhotos.length > 1 ? 'flex' : 'none';
+    next.style.display = lightboxPhotos.length > 1 ? 'flex' : 'none';
+  }
+
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+  }
+
+  function prevLightbox() {
+    if (lightboxPhotos.length < 2) return;
+    lightboxIndex--;
+    if (lightboxIndex < 0) lightboxIndex = lightboxPhotos.length - 1;
+    showLightboxImage();
+  }
+
+  function nextLightbox() {
+    if (lightboxPhotos.length < 2) return;
+    lightboxIndex++;
+    if (lightboxIndex >= lightboxPhotos.length) lightboxIndex = 0;
+    showLightboxImage();
+  }
+
   // ── 事件绑定 ──
   var cards = document.querySelectorAll('.subject-card');
   for (var i = 0; i < cards.length; i++) {
-    cards[i].addEventListener('click', function() {
+    cards[i].addEventListener('click', function(e) {
       if (!isToday(selectedDate)) return;
       toggleSubject(selectedDate, this.dataset.subject);
     });
   }
 
+  // Upload buttons
+  var addBtns = document.querySelectorAll('.photo-add-btn');
+  for (var i = 0; i < addBtns.length; i++) {
+    addBtns[i].addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (!isToday(selectedDate)) return;
+      var input = document.querySelector('.photo-input[data-subject="' + this.dataset.subject + '"]');
+      input.click();
+    });
+  }
+
+  // File inputs
+  var photoInputs = document.querySelectorAll('.photo-input');
+  for (var i = 0; i < photoInputs.length; i++) {
+    photoInputs[i].addEventListener('change', function(e) {
+      var sub = this.dataset.subject;
+      handleFileSelect(sub);
+    });
+  }
+
+  // Calendar nav
   document.getElementById('prevMonth').addEventListener('click', function() {
     calMonth--;
     if (calMonth < 0) { calMonth = 11; calYear--; }
@@ -876,8 +1228,32 @@
     renderMonthlyStats();
   });
 
+  // Lightbox
+  document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+  document.getElementById('lightboxPrev').addEventListener('click', function(e) {
+    e.stopPropagation();
+    prevLightbox();
+  });
+  document.getElementById('lightboxNext').addEventListener('click', function(e) {
+    e.stopPropagation();
+    nextLightbox();
+  });
+
+  document.getElementById('lightbox').addEventListener('click', function(e) {
+    if (e.target === this) closeLightbox();
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (!document.getElementById('lightbox').classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') prevLightbox();
+    if (e.key === 'ArrowRight') nextLightbox();
+  });
+
   // ── 启动 ──
-  loadAllData();
+  loadAllData().then(function() {
+    loadPhotosForDate(selectedDate);
+  });
 })();
 </script>
 </body>

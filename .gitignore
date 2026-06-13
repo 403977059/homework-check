@@ -2,3 +2,5 @@ __pycache__/
 *.pyc
 homework.db
 .DS_Store
+uploads/*
+!uploads/.gitkeep

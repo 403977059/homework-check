@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>作业打卡</title>
+<title>郭雨晨 作业打卡</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -28,16 +28,27 @@
     margin-bottom: 20px;
   }
 
-  .header h1 {
-    font-size: 28px;
+  .header .name-title {
+    font-size: 22px;
     font-weight: 700;
     color: #d4617a;
     margin-bottom: 2px;
   }
 
+  .header .name-title .emoji {
+    font-size: 24px;
+  }
+
+  .header .subtitle {
+    font-size: 12px;
+    color: #e8a0b4;
+    letter-spacing: 4px;
+    margin-bottom: 8px;
+  }
+
   .header .date-display {
     font-size: 15px;
-    color: #e8a0b4;
+    color: #d4a0b0;
     margin-bottom: 2px;
   }
 
@@ -102,7 +113,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
-    margin-bottom: 28px;
+    margin-bottom: 20px;
   }
 
   .subject-card {
@@ -141,7 +152,6 @@
     margin-bottom: 8px;
   }
 
-  /* Check circle */
   .check-circle {
     width: 36px;
     height: 36px;
@@ -161,7 +171,6 @@
     transition: opacity 0.25s ease;
   }
 
-  /* Completed state */
   .subject-card.completed {
     background: #faf0f4;
     opacity: 0.75;
@@ -182,7 +191,6 @@
     color: #c08a9a;
   }
 
-  /* Disabled state (not today) */
   .subject-card.disabled {
     cursor: default !important;
     opacity: 0.55 !important;
@@ -234,7 +242,6 @@
     stroke: #d4a0b0 !important;
   }
 
-  /* Accent rings per subject */
   .subject-card.chinese .check-circle { border-color: #f48fb1; }
   .subject-card.chinese.completed .check-circle {
     border-color: #e8a0b4; background: #e8a0b4;
@@ -344,7 +351,6 @@
   }
 
   .cal-day:hover { background: #fce8ef; }
-
   .cal-day.empty { cursor: default; }
   .cal-day.empty:hover { background: transparent; }
 
@@ -357,6 +363,8 @@
     content: '';
     position: absolute;
     bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
     width: 20px;
     height: 2px;
     background: #ec407a;
@@ -378,7 +386,6 @@
     position: relative;
   }
 
-  /* Status indicators */
   .cal-day .dot {
     width: 5px;
     height: 5px;
@@ -388,11 +395,11 @@
   }
 
   .cal-day .dot.pink { background: #f48fb1; }
-  .cal-day .dot.light-red { background: #ef9a9a; }
+  .cal-day .dot.gray { background: #d0c8c8; }
   .cal-day .dot.none { background: transparent; }
 
   .cal-day.selected .dot.pink { background: #fff; }
-  .cal-day.selected .dot.light-red { background: #fff; }
+  .cal-day.selected .dot.gray { background: #f0ecec; }
 
   /* ── Legend ── */
   .legend {
@@ -419,7 +426,98 @@
   }
 
   .legend-dot.pink { background: #f48fb1; }
-  .legend-dot.light-red { background: #ef9a9a; }
+  .legend-dot.gray { background: #d0c8c8; }
+
+  /* ── Monthly Stats ── */
+  .monthly-stats {
+    background: #fff;
+    border-radius: 18px;
+    padding: 18px 20px 16px;
+    box-shadow: 0 2px 12px rgba(212,97,122,0.10);
+    border: 1px solid #fce0e8;
+    margin-top: 16px;
+  }
+
+  .monthly-stats .stats-title {
+    text-align: center;
+    font-size: 13px;
+    color: #e8a0b4;
+    margin-bottom: 16px;
+    letter-spacing: 2px;
+  }
+
+  .stats-body {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .donut-wrap {
+    flex-shrink: 0;
+    position: relative;
+    width: 88px;
+    height: 88px;
+  }
+
+  .donut-wrap svg {
+    transform: rotate(-90deg);
+  }
+
+  .donut-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+
+  .donut-center .pct {
+    font-size: 20px;
+    font-weight: 700;
+    color: #d4617a;
+    line-height: 1.1;
+  }
+
+  .donut-center .pct-label {
+    font-size: 9px;
+    color: #e8a0b4;
+    line-height: 1;
+  }
+
+  .stats-detail {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .stats-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #5a4a50;
+  }
+
+  .stats-row .dot-icon {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .stats-row .dot-icon.pink { background: #f48fb1; }
+  .stats-row .dot-icon.gray { background: #d0c8c8; }
+
+  .stats-row .num {
+    font-weight: 700;
+    color: #d4617a;
+    margin-left: auto;
+  }
+
+  .stats-row .num.gray-num {
+    color: #b0a8a8;
+  }
 
   /* ── Responsive ── */
   @media (max-width: 400px) {
@@ -433,6 +531,8 @@
     body { padding: 16px 8px 24px; }
     .progress-section { padding: 12px 14px; }
     .cal-day { aspect-ratio: 1; }
+    .donut-wrap { width: 72px; height: 72px; }
+    .donut-center .pct { font-size: 16px; }
   }
 
   @media (min-width: 600px) {
@@ -449,12 +549,13 @@
 
   <!-- Header -->
   <div class="header">
-    <h1>🌸 作业打卡</h1>
+    <div class="name-title"><span class="emoji">🌸</span> 郭雨晨</div>
+    <div class="subtitle">✦ 作业打卡小达人 ✦</div>
     <div class="date-display" id="dateDisplay"></div>
     <div class="today-hint" id="todayHint"></div>
   </div>
 
-  <!-- Progress -->
+  <!-- Daily Progress -->
   <div class="progress-section">
     <div class="progress-label">今日完成 <span>|</span></div>
     <div class="progress-bar-wrap">
@@ -519,197 +620,265 @@
         <span class="legend-dot pink"></span> 全部完成
       </div>
       <div class="legend-item">
-        <span class="legend-dot light-red"></span> 未完成
+        <span class="legend-dot gray"></span> 未完成
       </div>
     </div>
+  </div>
+
+  <!-- Monthly Stats -->
+  <div class="monthly-stats">
+    <div class="stats-title">📊 本月打卡统计</div>
+    <div class="stats-body" id="statsBody"></div>
   </div>
 
 </div>
 
 <script>
-  (function() {
-    const STORAGE_KEY = 'homeworkChecklist';
-    const SUBJECTS = ['语文', '数学', '英语'];
+(function() {
+  var SUBJECTS = ['语文', '数学', '英语'];
 
-    let selectedDate = todayStr();
-    let calYear, calMonth;
+  // ── 数据层（全部通过 API 读写 SQLite） ──
+  var allData = {};          // 内存缓存: { "2026-06-14": { "语文":true, ... }, ... }
+  var selectedDate = todayStr();
+  var calYear, calMonth;
 
-    function todayStr() {
-      const d = new Date();
-      return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-    }
+  function todayStr() {
+    var d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  }
 
-    function parseDate(str) {
-      const p = str.split('-');
-      return { y: +p[0], m: +p[1], d: +p[2] };
-    }
+  function formatDisplay(str) {
+    var p = str.split('-');
+    return p[0] + '年' + (+p[1]) + '月' + (+p[2]) + '日';
+  }
 
-    function formatDisplay(str) {
-      const p = parseDate(str);
-      return p.y + '年' + p.m + '月' + p.d + '日';
-    }
+  function isToday(dateStr) {
+    return dateStr === todayStr();
+  }
 
-    function loadData() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        return raw ? JSON.parse(raw) : {};
-      } catch { return {}; }
-    }
-
-    function saveData(data) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-    }
-
-    function getSubjectsForDay(dateStr) {
-      const data = loadData();
-      const day = data[dateStr];
-      if (!day) return { '语文': false, '数学': false, '英语': false };
-      const result = {};
-      SUBJECTS.forEach(function(s) { result[s] = !!day[s]; });
-      return result;
-    }
-
-    function toggleSubject(dateStr, subject) {
-      if (dateStr !== todayStr()) return;
-      const data = loadData();
-      if (!data[dateStr]) data[dateStr] = {};
-      data[dateStr][subject] = !data[dateStr][subject];
-      saveData(data);
-    }
-
-    function getDateStatus(dateStr) {
-      const subjects = getSubjectsForDay(dateStr);
-      const done = SUBJECTS.filter(function(s) { return subjects[s]; }).length;
-      return { done: done, total: SUBJECTS.length, subjects: subjects };
-    }
-
-    function isToday(dateStr) {
-      return dateStr === todayStr();
-    }
-
-    // ── Render ──
-    function renderAll() {
-      renderProgress();
-      renderSubjectCards();
-      renderCalendar();
-    }
-
-    function renderProgress() {
-      const status = getDateStatus(selectedDate);
-      document.getElementById('dateDisplay').textContent = formatDisplay(selectedDate);
-
-      var hint = document.getElementById('todayHint');
-      if (isToday(selectedDate)) {
-        hint.textContent = '✨ 今天也要加油哦 ✨';
-      } else {
-        hint.textContent = '📋 查看历史记录';
-      }
-
-      var fill = document.getElementById('progressFill');
-      var count = document.getElementById('progressCount');
-      var pct = status.total > 0 ? (status.done / status.total * 100) : 0;
-      fill.style.width = pct + '%';
-      count.textContent = status.done + '/' + status.total;
-
-      var label = document.querySelector('.progress-label');
-      label.innerHTML = isToday(selectedDate)
-        ? '今日完成 <span>|</span>'
-        : '已完成 <span>|</span>';
-    }
-
-    function renderSubjectCards() {
-      var status = getDateStatus(selectedDate);
-      var isTodayFlag = isToday(selectedDate);
-
-      document.querySelectorAll('.subject-card').forEach(function(card) {
-        var subject = card.dataset.subject;
-        var completed = status.subjects[subject];
-        card.classList.toggle('completed', completed);
-        card.classList.toggle('disabled', !isTodayFlag);
+  // 从服务器加载全部数据
+  function loadAllData() {
+    return fetch('/api/data')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        allData = data;
+        renderAll();
+      })
+      .catch(function() {
+        document.getElementById('dateDisplay').textContent = '⚠️ 无法连接服务器';
       });
+  }
+
+  // 获取某天的科目状态
+  function getSubjectsForDay(dateStr) {
+    var day = allData[dateStr];
+    if (!day) return { '语文': false, '数学': false, '英语': false };
+    var result = {};
+    for (var i = 0; i < SUBJECTS.length; i++) {
+      result[SUBJECTS[i]] = !!day[SUBJECTS[i]];
     }
+    return result;
+  }
 
-    function renderCalendar() {
-      var now = new Date();
-      if (calYear === undefined) calYear = now.getFullYear();
-      if (calMonth === undefined) calMonth = now.getMonth();
-
-      document.getElementById('monthLabel').textContent = calYear + '年 ' + (calMonth + 1) + '月';
-
-      var grid = document.getElementById('calGrid');
-      grid.innerHTML = '';
-
-      var firstDay = new Date(calYear, calMonth, 1).getDay();
-      var daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
-      var today = todayStr();
-      var data = loadData();
-
-      for (var i = 0; i < firstDay; i++) {
-        var cell = document.createElement('div');
-        cell.className = 'cal-day empty';
-        grid.appendChild(cell);
-      }
-
-      for (var d = 1; d <= daysInMonth; d++) {
-        var dateStr = calYear + '-' + String(calMonth+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
-        var cell = document.createElement('div');
-        cell.className = 'cal-day';
-        if (dateStr === today) cell.classList.add('today');
-        if (dateStr === selectedDate) cell.classList.add('selected');
-
-        var numSpan = document.createElement('span');
-        numSpan.className = 'day-num';
-        numSpan.textContent = d;
-        cell.appendChild(numSpan);
-
-        var dot = document.createElement('span');
-        dot.className = 'dot';
-
-        if (data[dateStr]) {
-          var subjects = data[dateStr];
-          var allDone = SUBJECTS.every(function(s) { return subjects[s]; });
-          dot.classList.add(allDone ? 'pink' : 'light-red');
-        } else {
-          dot.classList.add('none');
-        }
-
-        cell.appendChild(dot);
-
-        cell.addEventListener('click', function(ds) {
-          return function() {
-            selectedDate = ds;
-            renderAll();
-          };
-        }(dateStr));
-
-        grid.appendChild(cell);
-      }
-    }
-
-    // ── Events ──
-    document.querySelectorAll('.subject-card').forEach(function(card) {
-      card.addEventListener('click', function() {
-        if (!isToday(selectedDate)) return;
-        var subject = this.dataset.subject;
-        toggleSubject(selectedDate, subject);
+  // 切换某天某科状态（只允许今天）
+  function toggleSubject(dateStr, subject) {
+    if (dateStr !== todayStr()) return;
+    fetch('/api/toggle', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ date: dateStr, subject: subject })
+    })
+      .then(function(r) { return r.json(); })
+      .then(function(subjects) {
+        allData[dateStr] = subjects;
         renderAll();
       });
-    });
+  }
 
-    document.getElementById('prevMonth').addEventListener('click', function() {
-      calMonth--;
-      if (calMonth < 0) { calMonth = 11; calYear--; }
-      renderCalendar();
-    });
+  function getDateStatus(dateStr) {
+    var subjects = getSubjectsForDay(dateStr);
+    var done = 0;
+    for (var i = 0; i < SUBJECTS.length; i++) {
+      if (subjects[SUBJECTS[i]]) done++;
+    }
+    return { done: done, total: SUBJECTS.length, subjects: subjects };
+  }
 
-    document.getElementById('nextMonth').addEventListener('click', function() {
-      calMonth++;
-      if (calMonth > 11) { calMonth = 0; calYear++; }
-      renderCalendar();
-    });
+  function getMonthlyStats(year, month) {
+    var now = new Date();
+    var isCurrentMonth = (year === now.getFullYear() && month === now.getMonth());
+    var daysInMonth = new Date(year, month + 1, 0).getDate();
+    var maxDay = isCurrentMonth ? now.getDate() : daysInMonth;
+    var completed = 0, incomplete = 0;
 
-    renderAll();
-  })();
+    for (var d = 1; d <= maxDay; d++) {
+      var dateStr = year + '-' + String(month+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
+      if (allData[dateStr]) {
+        var allDone = true;
+        for (var i = 0; i < SUBJECTS.length; i++) {
+          if (!allData[dateStr][SUBJECTS[i]]) { allDone = false; break; }
+        }
+        if (allDone) completed++;
+        else incomplete++;
+      }
+    }
+    return { completed: completed, incomplete: incomplete, total: completed + incomplete };
+  }
+
+  // ── 渲染 ──
+  function renderAll() {
+    renderProgress();
+    renderSubjectCards();
+    renderCalendar();
+    renderMonthlyStats();
+  }
+
+  function renderProgress() {
+    var status = getDateStatus(selectedDate);
+    document.getElementById('dateDisplay').textContent = formatDisplay(selectedDate);
+
+    var hint = document.getElementById('todayHint');
+    hint.textContent = isToday(selectedDate) ? '✨ 今天也要加油哦 ✨' : '📋 查看历史记录';
+
+    var fill = document.getElementById('progressFill');
+    var count = document.getElementById('progressCount');
+    var pct = status.total > 0 ? (status.done / status.total * 100) : 0;
+    fill.style.width = pct + '%';
+    count.textContent = status.done + '/' + status.total;
+
+    var label = document.querySelector('.progress-label');
+    label.innerHTML = isToday(selectedDate) ? '今日完成 <span>|</span>' : '已完成 <span>|</span>';
+  }
+
+  function renderSubjectCards() {
+    var status = getDateStatus(selectedDate);
+    var todayFlag = isToday(selectedDate);
+    var cards = document.querySelectorAll('.subject-card');
+    for (var i = 0; i < cards.length; i++) {
+      var card = cards[i];
+      var subject = card.dataset.subject;
+      var completed = status.subjects[subject];
+      card.classList.toggle('completed', completed);
+      card.classList.toggle('disabled', !todayFlag);
+    }
+  }
+
+  function renderCalendar() {
+    var now = new Date();
+    if (calYear === undefined) calYear = now.getFullYear();
+    if (calMonth === undefined) calMonth = now.getMonth();
+
+    document.getElementById('monthLabel').textContent = calYear + '年 ' + (calMonth + 1) + '月';
+
+    var grid = document.getElementById('calGrid');
+    grid.innerHTML = '';
+
+    var firstDay = new Date(calYear, calMonth, 1).getDay();
+    var daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+    var today = todayStr();
+
+    for (var i = 0; i < firstDay; i++) {
+      var cell = document.createElement('div');
+      cell.className = 'cal-day empty';
+      grid.appendChild(cell);
+    }
+
+    for (var d = 1; d <= daysInMonth; d++) {
+      var dateStr = calYear + '-' + String(calMonth+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
+      var cell = document.createElement('div');
+      cell.className = 'cal-day';
+      if (dateStr === today) cell.classList.add('today');
+      if (dateStr === selectedDate) cell.classList.add('selected');
+
+      var numSpan = document.createElement('span');
+      numSpan.className = 'day-num';
+      numSpan.textContent = d;
+      cell.appendChild(numSpan);
+
+      var dot = document.createElement('span');
+      dot.className = 'dot';
+
+      if (allData[dateStr]) {
+        var allDone = true;
+        for (var i = 0; i < SUBJECTS.length; i++) {
+          if (!allData[dateStr][SUBJECTS[i]]) { allDone = false; break; }
+        }
+        dot.classList.add(allDone ? 'pink' : 'gray');
+      } else {
+        dot.classList.add('none');
+      }
+
+      cell.appendChild(dot);
+
+      cell.addEventListener('click', (function(ds) {
+        return function() { selectedDate = ds; renderAll(); };
+      })(dateStr));
+
+      grid.appendChild(cell);
+    }
+  }
+
+  function renderMonthlyStats() {
+    var now = new Date();
+    var y = calYear !== undefined ? calYear : now.getFullYear();
+    var m = calMonth !== undefined ? calMonth : now.getMonth();
+    var stats = getMonthlyStats(y, m);
+    var body = document.getElementById('statsBody');
+
+    if (stats.total === 0) {
+      body.innerHTML = '<div style="text-align:center;color:#e8a0b4;font-size:13px;padding:6px 0;">本月还没有打卡记录哦 🌱</div>';
+      return;
+    }
+
+    var pct = Math.round(stats.completed / stats.total * 100);
+    var r = 36;
+    var circumference = 2 * Math.PI * r;
+    var offset = circumference - (pct / 100) * circumference;
+
+    body.innerHTML =
+      '<div class="donut-wrap">' +
+        '<svg width="88" height="88" viewBox="0 0 88 88">' +
+          '<circle cx="44" cy="44" r="' + r + '" fill="none" stroke="#f0e8ea" stroke-width="6"/>' +
+          '<circle cx="44" cy="44" r="' + r + '" fill="none" stroke="#f48fb1" stroke-width="6"' +
+            ' stroke-dasharray="' + circumference + '" stroke-dashoffset="' + offset + '"' +
+            ' stroke-linecap="round" transform="rotate(-90,44,44)"/>' +
+        '</svg>' +
+        '<div class="donut-center"><div class="pct">' + pct + '%</div><div class="pct-label">完成率</div></div>' +
+      '</div>' +
+      '<div class="stats-detail">' +
+        '<div class="stats-row"><span class="dot-icon pink"></span>全部完成 <span class="num">' + stats.completed + '天</span></div>' +
+        '<div class="stats-row"><span class="dot-icon gray"></span>未完成 <span class="num gray-num">' + stats.incomplete + '天</span></div>' +
+        '<div class="stats-row" style="margin-top:2px;padding-top:6px;border-top:1px solid #fce8ef;font-size:12px;color:#e8a0b4;">' +
+          '共打卡 <span style="font-weight:600;color:#d4617a;">' + stats.total + '</span> 天</div>' +
+      '</div>';
+  }
+
+  // ── 事件绑定 ──
+  var cards = document.querySelectorAll('.subject-card');
+  for (var i = 0; i < cards.length; i++) {
+    cards[i].addEventListener('click', function() {
+      if (!isToday(selectedDate)) return;
+      toggleSubject(selectedDate, this.dataset.subject);
+    });
+  }
+
+  document.getElementById('prevMonth').addEventListener('click', function() {
+    calMonth--;
+    if (calMonth < 0) { calMonth = 11; calYear--; }
+    renderCalendar();
+    renderMonthlyStats();
+  });
+
+  document.getElementById('nextMonth').addEventListener('click', function() {
+    calMonth++;
+    if (calMonth > 11) { calMonth = 0; calYear++; }
+    renderCalendar();
+    renderMonthlyStats();
+  });
+
+  // ── 启动 ──
+  loadAllData();
+})();
 </script>
 </body>
 </html>

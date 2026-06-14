@@ -719,6 +719,232 @@
     --chinese-name: #d48a1a;
   }
 
+
+  /* ── 成就区 (连续打卡 + 积分) ── */
+  .achievements {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin: 10px 0 2px;
+  }
+  .ach-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--color-primary);
+    background: rgba(255,255,255,0.7);
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--color-border);
+  }
+  .ach-icon { font-size: 16px; }
+  .ach-value { font-weight: 700; font-size: 16px; min-width: 18px; text-align: center; }
+  .ach-label { font-size: 11px; color: var(--color-muted); }
+
+  /* ── 学习备注 ── */
+  .note-section {
+    margin-top: 6px;
+    width: 100%;
+  }
+  .note-input {
+    width: 100%;
+    border: none;
+    background: #faf5f7;
+    border-radius: 8px;
+    padding: 4px 8px;
+    font-size: 11px;
+    color: var(--color-primary);
+    resize: none;
+    outline: none;
+    font-family: inherit;
+    box-sizing: border-box;
+    line-height: 1.4;
+    min-height: 22px;
+    transition: background 0.2s;
+  }
+  .note-input:focus {
+    background: #fff;
+    box-shadow: 0 0 0 1px var(--color-border);
+  }
+  .note-input::placeholder {
+    color: #d0c0c8;
+  }
+  .note-display {
+    width: 100%;
+    font-size: 11px;
+    color: var(--color-muted);
+    padding: 2px 4px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 18px;
+    line-height: 1.4;
+  }
+  [data-theme="le"] .note-input {
+    background: #f0f6fa;
+  }
+  [data-theme="le"] .note-input:focus {
+    background: #fff;
+    box-shadow: 0 0 0 1px var(--color-border);
+  }
+
+  /* ── 语音按钮 ── */
+  .voice-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid #d0e4f5;
+    background: #f5faff;
+    color: #5b9bd5;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+    margin: 0 auto 4px;
+    padding: 0;
+    line-height: 1;
+  }
+  .voice-btn:hover {
+    border-color: #5b9bd5;
+    background: #e3f0fa;
+  }
+  .voice-btn.recording {
+    border-color: #e74c3c;
+    background: #fde8e8;
+    color: #e74c3c;
+    animation: pulse 1s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+  }
+  .voice-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    animation: none;
+  }
+  .recording-label {
+    font-size: 9px;
+    color: #e74c3c;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  /* ── 音频播放器 ── */
+  .audio-player {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: #f5f5f7;
+    border-radius: 8px;
+    padding: 2px 8px;
+    border: 1px solid #e8e8ec;
+    cursor: default;
+  }
+  .audio-player .play-btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: none;
+    background: var(--color-primary-light);
+    color: #fff;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    line-height: 1;
+    padding: 0;
+  }
+  .audio-player .play-btn:hover {
+    opacity: 0.85;
+  }
+  .audio-player .wave-icon {
+    color: var(--color-muted);
+    font-size: 16px;
+  }
+  .audio-player .dur {
+    font-size: 10px;
+    color: #999;
+  }
+
+  /* ── 删除确认弹窗 ── */
+  .modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .modal-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .modal-box {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px 24px 20px;
+    max-width: 320px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+  }
+  .modal-box .modal-icon {
+    font-size: 36px;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .modal-box p {
+    font-size: 15px;
+    color: #5a4a50;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+  .modal-actions button {
+    padding: 10px 24px;
+    border-radius: 12px;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .modal-actions .modal-cancel {
+    background: #f0ecec;
+    color: #666;
+  }
+  .modal-actions .modal-cancel:hover { background: #e5e0e0; }
+  .modal-actions .modal-confirm {
+    background: #e74c5e;
+    color: #fff;
+  }
+  .modal-actions .modal-confirm:hover { background: #c0392b; }
+
+  .photo-thumb .type-badge {
+    position: absolute;
+    bottom: 0; left: 0;
+    font-size: 8px;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    padding: 0 3px;
+    border-radius: 0 4px 0 0;
+    line-height: 14px;
+  }
   @media (max-width: 400px) {
     .subjects { gap: 8px; }
     .subject-card { padding: 14px 6px 10px; }
@@ -755,7 +981,19 @@
     <div class="name-title" id="pageTitle"></div>
     <div class="subtitle" id="pageSubtitle"></div>
     <div class="date-display" id="dateDisplay"></div>
-    <div class="today-hint" id="todayHint"></div>
+    <div class="today-hint" id="todayHint" style="margin-bottom:4px"></div>
+    <div class="achievements">
+      <span class="ach-item" title="连续打卡">
+        <span class="ach-icon">🔥</span>
+        <span class="ach-value" id="streakCount">0</span>
+        <span class="ach-label">天连续</span>
+      </span>
+      <span class="ach-item" title="总积分">
+        <span class="ach-icon">⭐</span>
+        <span class="ach-value" id="pointsCount">0</span>
+        <span class="ach-label">积分</span>
+      </span>
+    </div>
   </div>
 
   <!-- Daily Progress -->
@@ -779,8 +1017,14 @@
       </div>
       <div class="photos-row" id="photos-语文"></div>
       <button class="photo-add-btn" data-subject="语文" title="上传照片">+</button>
+      <span class="recording-label" id="recLabel-语文" style="display:none">● 录制中</span>
+      <button class="voice-btn" data-subject="语文" title="录制语音" id="voiceBtn-语文">🎤</button>
       <input type="file" class="photo-input" data-subject="语文" accept="image/*" multiple hidden>
       <span class="only-today-badge">仅限今日打卡</span>
+      <div class="note-section">
+        <div class="note-display" id="noteD-语文" style="display:none"></div>
+        <textarea class="note-input" id="noteI-语文" placeholder="学了什么？" maxlength="200" style="display:none"></textarea>
+      </div>
     </div>
 
     <div class="subject-card math" data-subject="数学">
@@ -793,8 +1037,14 @@
       </div>
       <div class="photos-row" id="photos-数学"></div>
       <button class="photo-add-btn" data-subject="数学" title="上传照片">+</button>
+      <span class="recording-label" id="recLabel-数学" style="display:none">● 录制中</span>
+      <button class="voice-btn" data-subject="数学" title="录制语音" id="voiceBtn-数学">🎤</button>
       <input type="file" class="photo-input" data-subject="数学" accept="image/*" multiple hidden>
       <span class="only-today-badge">仅限今日打卡</span>
+      <div class="note-section">
+        <div class="note-display" id="noteD-数学" style="display:none"></div>
+        <textarea class="note-input" id="noteI-数学" placeholder="学了什么？" maxlength="200" style="display:none"></textarea>
+      </div>
     </div>
 
     <div class="subject-card english" data-subject="英语">
@@ -807,13 +1057,19 @@
       </div>
       <div class="photos-row" id="photos-英语"></div>
       <button class="photo-add-btn" data-subject="英语" title="上传照片">+</button>
+      <span class="recording-label" id="recLabel-英语" style="display:none">● 录制中</span>
+      <button class="voice-btn" data-subject="英语" title="录制语音" id="voiceBtn-英语">🎤</button>
       <input type="file" class="photo-input" data-subject="英语" accept="image/*" multiple hidden>
       <span class="only-today-badge">仅限今日打卡</span>
+      <div class="note-section">
+        <div class="note-display" id="noteD-英语" style="display:none"></div>
+        <textarea class="note-input" id="noteI-英语" placeholder="学了什么？" maxlength="200" style="display:none"></textarea>
+      </div>
     </div>
+
   </div>
 
-  <!-- Calendar -->
-  <div class="calendar-section">
+<div class="calendar-section">
     <div class="cal-title-deco">✦ 打卡日历 ✦</div>
     <div class="cal-header">
       <div class="month-label" id="monthLabel"></div>
@@ -853,6 +1109,19 @@
   <span class="lightbox-nav next" id="lightboxNext">&#8250;</span>
 </div>
 
+<!-- 删除确认弹窗 -->
+<div class="modal-overlay" id="deleteModal">
+  <div class="modal-box">
+    <span class="modal-icon">⚠️</span>
+    <p id="deleteModalMsg">确定要删除这条记录吗？</p>
+    <div class="modal-actions">
+      <button class="modal-cancel" id="modalCancel">取消</button>
+      <button class="modal-confirm" id="modalConfirm">确定删除</button>
+    </div>
+  </div>
+</div>
+
+
 <script>
 (function() {
   var SUBJECTS = ['语文', '数学', '英语'];
@@ -881,6 +1150,7 @@
   var selectedDate = todayStr();
   var calYear, calMonth;
   var allPhotos = {};   // { "语文": [...], "数学": [...], "英语": [...] }
+  var allAudio = {};    // same structure for voice recordings
   var lightboxPhotos = []; // flattened list for lightbox navigation
   var lightboxIndex = 0;
 
@@ -908,16 +1178,18 @@
       })
       .catch(function() {
         document.getElementById('dateDisplay').textContent = '⚠️ 无法连接服务器';
+        renderAll();
       });
   }
 
-  function loadPhotosForDate(dateStr) {
+  function loadMediaForDate(dateStr) {
     allPhotos = { '语文': [], '数学': [], '英语': [] };
     var promises = SUBJECTS.map(function(sub) {
-      return fetch('/api/photos?date=' + encodeURIComponent(dateStr) + '&subject=' + encodeURIComponent(sub) + '&student=' + STUDENT)
+      return fetch('/api/media?date=' + encodeURIComponent(dateStr) + '&subject=' + encodeURIComponent(sub) + '&student=' + STUDENT)
         .then(function(r) { return r.json(); })
-        .then(function(photos) {
-          allPhotos[sub] = photos;
+        .then(function(items) {
+          allPhotos[sub] = items.filter(function(i){ return i.type === 'photo'; });
+          allAudio[sub] = items.filter(function(i){ return i.type === 'voice'; });
         })
         .catch(function() {});
     });
@@ -983,10 +1255,12 @@
   // ── 渲染 ──
   function renderAll() {
     applyTheme();
+    loadStreaks();
     renderProgress();
     renderSubjectCards();
     renderCalendar();
     renderMonthlyStats();
+    renderNotes();
   }
 
   function renderProgress() {
@@ -1071,6 +1345,7 @@
           selectedDate = ds;
           renderAll();
           loadPhotosForDate(ds);
+          loadNotesForDate(ds);
         };
       })(dateStr));
 
@@ -1115,6 +1390,7 @@
 
   // ── 照片渲染 ──
   function renderPhotos() {
+    renderAudio();
     var todayFlag = isToday(selectedDate);
     SUBJECTS.forEach(function(sub) {
       var container = document.getElementById('photos-' + sub);
@@ -1139,7 +1415,7 @@
           delBtn.dataset.photoId = photo.id;
           delBtn.addEventListener('click', function(e) {
             e.stopPropagation();
-            deletePhoto(photo.id);
+            showDeleteConfirm(photo.id, 'photo');
           });
           thumb.appendChild(delBtn);
         }
@@ -1167,8 +1443,9 @@
     formData.append('date', selectedDate);
     formData.append('subject', subject);
     formData.append('student', STUDENT);
+    formData.append('type', 'photo');
     for (var i = 0; i < files.length; i++) {
-      formData.append('photos', files[i]);
+      formData.append('media', files[i]);
     }
 
     fetch('/api/upload', {
@@ -1180,7 +1457,7 @@
         input.value = '';
         addBtn.textContent = '+';
         addBtn.disabled = false;
-        loadPhotosForDate(selectedDate);
+        loadMediaForDate(selectedDate);
       })
       .catch(function() {
         addBtn.textContent = '+';
@@ -1189,12 +1466,12 @@
   }
 
   // ── 删除照片 ──
-  function deletePhoto(photoId) {
-    fetch('/api/photo/' + photoId, { method: 'DELETE' })
+  function deleteMedia(mediaId) {
+    fetch('/api/media/' + mediaId, { method: 'DELETE' })
       .then(function(r) { return r.json(); })
       .then(function(result) {
         if (result.success) {
-          loadPhotosForDate(selectedDate);
+          loadMediaForDate(selectedDate);
         }
       })
       .catch(function() {});
@@ -1237,6 +1514,81 @@
     if (lightboxIndex >= lightboxPhotos.length) lightboxIndex = 0;
     showLightboxImage();
   }
+
+  // ── 学习备注 ──
+  var notesCache = {};
+  var noteTimers = {};
+
+  function renderNotes() {
+    var todayFlag = isToday(selectedDate);
+    var subjs = ['语文', '数学', '英语'];
+    subjs.forEach(function(sub) {
+      var display = document.getElementById('noteD-' + sub);
+      var input = document.getElementById('noteI-' + sub);
+      if (!display || !input) return;
+
+      if (todayFlag) {
+        display.style.display = 'none';
+        input.style.display = 'block';
+        // Load saved note for today from cache or API
+        if (notesCache[sub] !== undefined) {
+          input.value = notesCache[sub] || '';
+        } else {
+          input.value = '';
+        }
+      } else {
+        input.style.display = 'none';
+        // Show note if exists
+        if (notesCache[sub]) {
+          display.style.display = 'block';
+          display.textContent = '📝 ' + notesCache[sub];
+          display.title = notesCache[sub];
+        } else {
+          display.style.display = 'none';
+        }
+      }
+    });
+  }
+
+  function loadNotesForDate(dateStr) {
+    return fetch('/api/notes?date=' + encodeURIComponent(dateStr) + '&student=' + STUDENT)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        notesCache = {};
+        var subjs = ['语文', '数学', '英语'];
+        subjs.forEach(function(s) {
+          notesCache[s] = data[s] || '';
+        });
+        renderNotes();
+      })
+      .catch(function() {});
+  }
+
+  function saveNote(subject) {
+    var input = document.getElementById('noteI-' + subject);
+    if (!input) return;
+    var noteText = input.value.trim();
+    notesCache[subject] = noteText;
+
+    fetch('/api/notes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ date: selectedDate, subject: subject, student: STUDENT, notes: noteText })
+    }).catch(function() {});
+  }
+
+  // 备注输入自动保存（防抖）
+  var subjs = ['语文', '数学', '英语'];
+  subjs.forEach(function(sub) {
+    var input = document.getElementById('noteI-' + sub);
+    if (input) {
+      input.addEventListener('input', function() {
+        var s = this.id.replace('noteI-', '');
+        if (noteTimers[s]) clearTimeout(noteTimers[s]);
+        noteTimers[s] = setTimeout(function() { saveNote(s); }, 800);
+      });
+    }
+  });
 
   // ── 事件绑定 ──
   var cards = document.querySelectorAll('.subject-card');
@@ -1305,10 +1657,199 @@
   });
 
   // ── 启动 ──
+
+  // ── 连续打卡 & 星星 ──
+  function loadStreaks() {
+    fetch('/api/streaks?student=' + STUDENT)
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        var sc = document.getElementById('streakCount'); if (sc) sc.textContent = data.current_streak;
+        var pc = document.getElementById('pointsCount'); if (pc) pc.textContent = data.total_stars;
+      });
+  }
+
+  // ── 语音录制 ──
+  var mediaRecorder = null;
+  var audioChunks = [];
+  var recordingSubject = null;
+
+  function startVoiceRecording(subject) {
+    if (mediaRecorder && mediaRecorder.state === 'recording') return;
+    navigator.mediaDevices.getUserMedia({ audio: true })
+      .then(function(stream) {
+        audioChunks = [];
+        recordingSubject = subject;
+        mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm;codecs=opus' });
+        mediaRecorder.ondataavailable = function(e) {
+          if (e.data.size > 0) audioChunks.push(e.data);
+        };
+        mediaRecorder.onstop = function() {
+          stream.getTracks().forEach(function(t){ t.stop(); });
+          var blob = new Blob(audioChunks, { type: 'audio/webm' });
+          uploadVoice(blob, recordingSubject);
+          recordingSubject = null;
+          var btn = document.getElementById('voiceBtn-' + subject);
+          btn.classList.remove('recording');
+          btn.textContent = '🎤';
+          btn.disabled = false;
+          document.getElementById('recLabel-' + subject).style.display = 'none';
+        };
+        mediaRecorder.start();
+        var btn = document.getElementById('voiceBtn-' + subject);
+        btn.classList.add('recording');
+        btn.textContent = '⏹';
+        btn.disabled = false;
+        document.getElementById('recLabel-' + subject).style.display = 'block';
+      })
+      .catch(function(err) {
+        alert('无法访问麦克风: ' + err.message);
+      });
+  }
+
+  function stopVoiceRecording() {
+    if (mediaRecorder && mediaRecorder.state === 'recording') {
+      mediaRecorder.stop();
+    }
+  }
+
+  function uploadVoice(blob, subject) {
+    var formData = new FormData();
+    formData.append('date', selectedDate);
+    formData.append('subject', subject);
+    formData.append('student', STUDENT);
+    formData.append('type', 'voice');
+    formData.append('media', blob, 'recording_' + Date.now() + '.webm');
+    fetch('/api/upload', { method: 'POST', body: formData })
+      .then(function(r){ return r.json(); })
+      .then(function(result){
+        loadMediaForDate(selectedDate);
+      });
+  }
+
+  // Voice button handlers
+  Array.prototype.forEach.call(document.querySelectorAll('.voice-btn'), function(btn){
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      var sub = this.dataset.subject;
+      if (mediaRecorder && mediaRecorder.state === 'recording') {
+        if (recordingSubject === sub) {
+          stopVoiceRecording();
+        } else {
+          alert('请先停止当前录音再开始新的');
+        }
+        return;
+      }
+      startVoiceRecording(sub);
+    });
+  });
+
+  // ── 音频渲染 ──
+  function renderAudio() {
+    var todayFlag = isToday(selectedDate);
+    SUBJECTS.forEach(function(sub) {
+      var container = document.getElementById('photos-' + sub);
+      var audios = allAudio[sub] || [];
+      audios.forEach(function(item) {
+        var wrap = document.createElement('div');
+        wrap.className = 'audio-player';
+        wrap.title = '点击播放';
+        var playBtn = document.createElement('button');
+        playBtn.className = 'play-btn';
+        playBtn.textContent = '▶';
+        playBtn.dataset.url = item.url;
+        playBtn.dataset.playing = 'false';
+        playBtn.addEventListener('click', function(e){
+          e.stopPropagation();
+          var pb = this;
+          if (pb.dataset.playing === 'true') {
+            if (window._currentAudio) { window._currentAudio.pause(); window._currentAudio = null; }
+            pb.textContent = '▶';
+            pb.dataset.playing = 'false';
+            return;
+          }
+          // Stop all others
+          Array.prototype.forEach.call(document.querySelectorAll('.play-btn'), function(b){ b.textContent = '▶'; b.dataset.playing = 'false'; });
+          if (window._currentAudio) { window._currentAudio.pause(); }
+          var audio = new Audio(pb.dataset.url);
+          window._currentAudio = audio;
+          audio.onended = function(){ pb.textContent = '▶'; pb.dataset.playing = 'false'; window._currentAudio = null; };
+          audio.play();
+          pb.textContent = '⏸';
+          pb.dataset.playing = 'true';
+        });
+        wrap.appendChild(playBtn);
+        var wave = document.createElement('span');
+        wave.className = 'wave-icon';
+        wave.textContent = '〰️';
+        wrap.appendChild(wave);
+        var dur = document.createElement('span');
+        dur.className = 'dur';
+        dur.textContent = '录音';
+        wrap.appendChild(dur);
+        if (todayFlag) {
+          var delBtn2 = document.createElement('button');
+          delBtn2.className = 'photo-del-btn';
+          delBtn2.style.cssText = 'position:static;margin-left:auto;flex-shrink:0;display:block;';
+          delBtn2.textContent = '×';
+          delBtn2.title = '删除';
+          delBtn2.addEventListener('click', function(e){
+            e.stopPropagation();
+            showDeleteConfirm(item.id, 'voice');
+          });
+          wrap.appendChild(delBtn2);
+        }
+        wrap.addEventListener('click', function(e){
+          if (e.target === this || e.target.tagName !== 'BUTTON') {
+            this.querySelector('.play-btn').click();
+          }
+        });
+        container.appendChild(wrap);
+      });
+    });
+  }
+
+  // ── 删除确认弹窗 ──
+  var pendingDeleteId = null;
+
+  function showDeleteConfirm(mediaId, type) {
+    pendingDeleteId = mediaId;
+    var msg = type === 'photo' ? '确定要删除这张照片吗？\n删除后无法恢复。' : '确定要删除这条录音吗？\n删除后无法恢复。';
+    document.getElementById('deleteModalMsg').textContent = msg;
+    document.getElementById('deleteModal').classList.add('open');
+  }
+
+  document.getElementById('modalCancel').addEventListener('click', function(){
+    document.getElementById('deleteModal').classList.remove('open');
+    pendingDeleteId = null;
+  });
+
+  document.getElementById('modalConfirm').addEventListener('click', function(){
+    if (pendingDeleteId) {
+      deleteMedia(pendingDeleteId);
+      pendingDeleteId = null;
+    }
+    document.getElementById('deleteModal').classList.remove('open');
+  });
+
+  document.getElementById('deleteModal').addEventListener('click', function(e){
+    if (e.target === this) {
+      this.classList.remove('open');
+      pendingDeleteId = null;
+    }
+  });
+
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && document.getElementById('deleteModal').classList.contains('open')) {
+      document.getElementById('deleteModal').classList.remove('open');
+      pendingDeleteId = null;
+    }
+  });
   loadAllData().then(function() {
-    loadPhotosForDate(selectedDate);
+    loadMediaForDate(selectedDate);
+    loadNotesForDate(selectedDate);
   });
 })();
 </script>
+
 </body>
 </html>

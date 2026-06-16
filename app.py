@@ -14,6 +14,22 @@ SUBJECTS = ['语文', '数学', '英语']
 STUDENTS = {'chen': '郭雨晨', 'le': '郭雨乐'}
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
+# ── 加载 .env 配置文件 ──
+def load_env():
+    env_path = os.path.join(BASE, '.env')
+    if os.path.exists(env_path):
+        with open(env_path) as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith('#'):
+                    continue
+                if '=' in line:
+                    k, v = line.split('=', 1)
+                    k, v = k.strip(), v.strip()
+                    if k not in os.environ:
+                        os.environ[k] = v
+load_env()
+
 # ── OSS ──
 OSS_ENABLED = all(os.environ.get(k) for k in ['OSS_ENDPOINT','OSS_BUCKET','OSS_KEY_ID','OSS_KEY_SECRET'])
 

@@ -720,20 +720,6 @@
   }
 
 
-  /* ── 语音录制 ── */
-  .voice-btn {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 28px; height: 28px; border-radius: 50%;
-    border: 2px solid #d0e4f5; background: #f5faff; color: #5b9bd5;
-    cursor: pointer; font-size: 14px; transition: all 0.2s;
-    margin: 0 auto 4px; padding: 0; line-height: 1;
-  }
-  .voice-btn:hover { border-color: #5b9bd5; background: #e3f0fa; }
-  .voice-btn.recording { border-color: #e74c3c; background: #fde8e8; color: #e74c3c; animation: pulse 1s infinite; }
-  @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }
-  .voice-btn:disabled { opacity: 0.5; cursor: not-allowed; animation: none; }
-  .recording-label { font-size: 9px; color: #e74c3c; display: block; margin-bottom: 2px; }
-
   /* ── 音频播放器 ── */
   .audio-player {
     display: flex; align-items: center; gap: 4px;
@@ -847,8 +833,6 @@
       </div>
       <div class="photos-row" id="photos-语文"></div>
       <button class="photo-add-btn" data-subject="语文" title="上传照片">+</button>
-      <span class="recording-label" id="recLabel-语文" style="display:none">● 录制中</span>
-      <button class="voice-btn" data-subject="语文" title="录制语音" id="voiceBtn-语文">🎤</button>
       <input type="file" class="photo-input" data-subject="语文" accept="image/*" multiple hidden>
       <span class="only-today-badge">仅限今日打卡</span>
     </div>
@@ -863,8 +847,6 @@
       </div>
       <div class="photos-row" id="photos-数学"></div>
       <button class="photo-add-btn" data-subject="数学" title="上传照片">+</button>
-      <span class="recording-label" id="recLabel-数学" style="display:none">● 录制中</span>
-      <button class="voice-btn" data-subject="数学" title="录制语音" id="voiceBtn-数学">🎤</button>
       <input type="file" class="photo-input" data-subject="数学" accept="image/*" multiple hidden>
       <span class="only-today-badge">仅限今日打卡</span>
     </div>
@@ -879,8 +861,6 @@
       </div>
       <div class="photos-row" id="photos-英语"></div>
       <button class="photo-add-btn" data-subject="英语" title="上传照片">+</button>
-      <span class="recording-label" id="recLabel-英语" style="display:none">● 录制中</span>
-      <button class="voice-btn" data-subject="英语" title="录制语音" id="voiceBtn-英语">🎤</button>
       <input type="file" class="photo-input" data-subject="英语" accept="image/*" multiple hidden>
       <span class="only-today-badge">仅限今日打卡</span>
     </div>
@@ -1409,80 +1389,8 @@
   });
 
   
-  // ── 语音录制 ──
-  var mediaRecorder = null;
-  var audioChunks = [];
-  var recordingSubject = null;
 
-  function startVoiceRecording(subject) {
-    if (mediaRecorder && mediaRecorder.state === 'recording') return;
-    navigator.mediaDevices.getUserMedia({ audio: true })
-      .then(function(stream) {
-        audioChunks = [];
-        recordingSubject = subject;
-        mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm;codecs=opus' });
-        mediaRecorder.ondataavailable = function(e) {
-          if (e.data.size > 0) audioChunks.push(e.data);
-        };
-        mediaRecorder.onstop = function() {
-          stream.getTracks().forEach(function(t){ t.stop(); });
-          var blob = new Blob(audioChunks, { type: 'audio/webm' });
-          uploadVoice(blob, recordingSubject);
-          recordingSubject = null;
-          var btn = document.getElementById('voiceBtn-' + subject);
-          if (btn) { btn.classList.remove('recording'); btn.textContent = '🎤'; btn.disabled = false; }
-          var rl = document.getElementById('recLabel-' + subject);
-          if (rl) rl.style.display = 'none';
-        };
-        mediaRecorder.start();
-        var btn = document.getElementById('voiceBtn-' + subject);
-        if (btn) { btn.classList.add('recording'); btn.textContent = '⏹'; btn.disabled = false; }
-        var rl = document.getElementById('recLabel-' + subject);
-        if (rl) rl.style.display = 'block';
-      })
-      .catch(function(err) { alert('无法访问麦克风: ' + err.message); });
-  }
 
-  function stopVoiceRecording() {
-    if (mediaRecorder && mediaRecorder.state === 'recording') mediaRecorder.stop();
-  }
-
-  window.deleteMedia = function(mediaId) {
-    fetch('/api/media/' + mediaId, { method: 'DELETE' })
-      .then(function(r) { return r.json(); })
-      .then(function(result) {
-        if (result.success) {
-          loadMediaForDate(selectedDate);
-          if (typeof loadStreaks === 'function') loadStreaks();
-        }
-      });
-  }
-
-    function uploadVoice(blob, subject) {
-    var formData = new FormData();
-    formData.append('date', selectedDate);
-    formData.append('subject', subject);
-    formData.append('student', STUDENT);
-    formData.append('type', 'voice');
-    formData.append('media', blob, 'recording_' + Date.now() + '.webm');
-    fetch('/api/upload', { method: 'POST', body: formData })
-      .then(function(r){ return r.json(); })
-      .then(function(result){ loadMediaForDate(selectedDate); });
-  }
-
-  // Voice button handlers
-  Array.prototype.forEach.call(document.querySelectorAll('.voice-btn'), function(btn){
-    btn.addEventListener('click', function(e){
-      e.stopPropagation();
-      var sub = this.dataset.subject;
-      if (mediaRecorder && mediaRecorder.state === 'recording') {
-        if (recordingSubject === sub) { stopVoiceRecording(); }
-        else { alert('请先停止当前录音再开始新的'); }
-        return;
-      }
-      startVoiceRecording(sub);
-    });
-  });
 
   // ── 音频渲染 ──
   function renderAudio() {
@@ -1535,6 +1443,17 @@
         container.appendChild(wrap);
       });
     });
+  }
+
+  window.deleteMedia = function(mediaId) {
+    fetch('/api/media/' + mediaId, { method: 'DELETE' })
+      .then(function(r) { return r.json(); })
+      .then(function(result) {
+        if (result.success) {
+          loadMediaForDate(selectedDate);
+          if (typeof loadStreaks === 'function') loadStreaks();
+        }
+      });
   }
 
   // ── 删除确认弹窗 ──

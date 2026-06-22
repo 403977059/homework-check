@@ -221,6 +221,39 @@ def api_upload():
             uploaded.append({'filename':name,'url':ourl or f'/uploads/{name}','type':mtype})
     return jsonify({'uploaded':uploaded,'count':len(uploaded)})
 
+@app.route('/api/upload_token')
+def api_upload_token():
+    """生成前端直传 OSS 的签名 PUT URL（不经过 Railway 中转）"""
+    ds = request.args.get('date')
+    sub = request.args.get('subject')
+    stu = request.args.get('student','chen')
+    mtype = request.args.get('type','photo')
+    ext = request.args.get('ext','jpg')
+    if not ds or not sub: return jsonify({'error':'缺少日期或科目'}),400
+    if sub not in SUBJECTS: return jsonify({'error':'无效科目'}),400
+    if stu not in STUDENTS: return jsonify({'error':'无效学生'}),400
+    if not OSS_ENABLED: return jsonify({'error':'OSS 未配置'}),400
+    name = f"{ds}_{stu}_{sub}_{uuid.uuid4().hex[:8]}.{ext}"
+    okey = f"{stu}/{ds}/{sub}/{name}"
+    expires = int(time.time()) + 300
+    sig = _oss_sign('PUT', okey, expires=str(expires))
+    url = f"https://{os.environ['OSS_BUCKET']}.{os.environ['OSS_ENDPOINT']}/{quote(okey,safe='')}?OSSAccessKeyId={os.environ['OSS_KEY_ID']}&Expires={expires}&Signature={quote(sig,safe='')}"
+    return jsonify({'upload_url':url,'oss_key':okey,'filename':name})
+
+@app.route('/api/upload_record', methods=['POST'])
+def api_upload_record():
+    """前端直传成功后，记录到数据库"""
+    body = request.get_json()
+    ds,sub,stu = body.get('date'),body.get('subject'),body.get('student','chen')
+    mtype = body.get('type','photo')
+    okey,filename = body.get('oss_key'),body.get('filename')
+    if not all([ds,sub,okey,filename]): return jsonify({'error':'缺少参数'}),400
+    conn = get_db()
+    conn.execute("INSERT INTO media (date,subject,filename,student,type,oss_key) VALUES (?,?,?,?,?,?)",
+                (ds,sub,filename,stu,mtype,okey))
+    conn.commit(); conn.close()
+    return jsonify({'success':True})
+
 @app.route('/api/media')
 def api_get_media():
     ds = request.args.get('date'); sub = request.args.get('subject')

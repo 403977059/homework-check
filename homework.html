@@ -194,7 +194,6 @@
   .subject-card.disabled {
     cursor: default !important;
     opacity: 0.55 !important;
-    pointer-events: none !important;
   }
 
   .subject-card.disabled:hover {
@@ -1225,7 +1224,7 @@
   }
 
   // ── 上传照片 ──
-  function handleFileSelect(subject) {
+ function handleFileSelect(subject) {
     var input = document.querySelector('.photo-input[data-subject="' + subject + '"]');
     var files = input.files;
     if (!files || files.length === 0) return;
@@ -1234,29 +1233,68 @@
     addBtn.textContent = '...';
     addBtn.disabled = true;
 
-    var formData = new FormData();
-    formData.append('date', selectedDate);
-    formData.append('subject', subject);
-    formData.append('student', STUDENT);
-    for (var i = 0; i < files.length; i++) {
-      formData.append('photos', files[i]);
-    }
+   var uploadNext = function(idx) {
+      /* 尝试直传 OSS，失败则回退到服务器中转 */
+      var uploadToServer = function(idx, file) {
+        var fd = new FormData();
+        fd.append('date', selectedDate);
+        fd.append('subject', subject);
+        fd.append('student', STUDENT);
+        fd.append('photos', file);
+       return fetch('/api/upload', { method: 'POST', body: fd })
+         .then(function(r) { return r.json(); })
+          .then(function() { uploadNext(idx + 1); })
+          .catch(function(e2) {
+            console.error('服务器中转也失败了:', e2);
+            uploadNext(idx + 1);  // 跳过失败文件，继续传下一个
+          });
+      };
 
-    fetch('/api/upload', {
-      method: 'POST',
-      body: formData
-    })
-      .then(function(r) { return r.json(); })
-      .then(function(result) {
+      if (idx >= files.length) {
         input.value = '';
         addBtn.textContent = '+';
         addBtn.disabled = false;
         loadMediaForDate(selectedDate);
-      })
-      .catch(function() {
-        addBtn.textContent = '+';
-        addBtn.disabled = false;
-      });
+        return;
+      }
+      var file = files[idx];
+      var ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+      // 1) 尝试直传到 OSS
+      var url = '/api/upload_token?date=' + encodeURIComponent(selectedDate)
+        + '&subject=' + encodeURIComponent(subject)
+        + '&student=' + STUDENT
+        + '&type=photo&ext=' + ext;
+      fetch(url)
+        .then(function(r) { return r.json(); })
+        .then(function(token) {
+          return fetch(token.upload_url, {
+            method: 'PUT',
+            body: file,
+            headers: { 'Content-Type': 'application/octet-stream' }
+          }).then(function() {
+            return fetch('/api/upload_record', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                date: selectedDate,
+                subject: subject,
+                student: STUDENT,
+                type: 'photo',
+                oss_key: token.oss_key,
+                filename: token.filename
+              })
+            });
+          }).then(function() {
+            uploadNext(idx + 1);
+          });
+        })
+        .catch(function(e) {
+          // 2) 直传失败 → 回退到服务器中转
+          console.warn('直传 OSS 失败，回退到服务器中转:', e);
+          uploadToServer(idx, file);
+        });
+    };
+    uploadNext(0);
   }
 
   // ── 删除照片 ──
